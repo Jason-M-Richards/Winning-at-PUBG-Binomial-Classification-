@@ -48,14 +48,14 @@ At first glance, there are alot of 0s that is going to be prevalent in the datas
 ### Outliers
 There are some significant outliers regarding longest kill and damage dealt. Before I standardize the data, I want to take care of as many outliers as possible without losing too much data. Removing data will stay at or below 1% of total data for each feature with significant outliers.
 
-add ![ol1](outliers1.png)
+![ol1](outliers1.png)
 
-add ![ol\2](outliers2.png)
+![ol\2](outliers2.png)
 
 ### Feature Importance
 The consensus for the models is that around 8 features account for about 90% of the data.
 
-add ![fi](feature_importance.png)
+![fi](feature_importance.png)
 
 ## Results
 
@@ -64,7 +64,7 @@ add ![fi](feature_importance.png)
 ### Training Accuracy: 99.4%
 ### Validation accuracy: 99.4%
 
-add ![cf](confusion_matrix.png)
+![cf](confusion_matrix.png)
 
 ## Conclusion
 The goal of this project was to determine what, if any, features can predict a win in the game of Player Unknown's Battlegrounds to uncover some business insights into this ultra-competitive market. Since different features would benefit certain match types over others, the data was separated into solo, duo and squad matchtypes.
