@@ -48,7 +48,7 @@ At first glance, there are alot of 0s that is going to be prevalent in the datas
 ### Outliers
 There are some significant outliers regarding longest kill and damage dealt. Before I standardize the data, I want to take care of as many outliers as possible without losing too much data. Removing data will stay at or below 1% of total data for each feature with significant outliers.
 
-![ol1](http://localhost:8889/tree/outliers1.png)
+![ol1](outliers1.png)
 
 ![ol\2](outliers2.png)
 
