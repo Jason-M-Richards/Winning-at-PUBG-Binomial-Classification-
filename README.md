@@ -1,119 +1,78 @@
+##  Introduction
+Player Unknown's Battlegrounds (PUBG) is an online multiplayer Battle Roayale style "shooter" game. The game was developed and published by PUBG corporation, a subsidy of Bluehole game company in South Korea. The game, inspired by a 2000 Japanese film "Battle Royale" was conceived in many iterations by Brendan Greene (a.k.a. Player Unknown). The game was first released via PC in Beta format in March 2017, with a full PC release in December of the same year. The game was quickly converted to play on console with the XBox in September of 2018, and is now avaialble on Playstation and Nintendo as well as mobile versions in Android and iOS. The game is one of the most popular selling games of all time and has over 400 million players worldwide.
 
-# Module 3 Final Project
+Battlegrounds is a player v player online match where up to 100 players can participate. Players can enter a match solo, duo (with one teammate) or in a squad of up to four players. The match starts with a players being parachuted from a plane over a map. The trajectory of the plane varies per match, so players must quickly decide when to eject to land at a selected location. Players are dropped without any weapons or gear, which is randomly placed around the entirety of the map. Players can search buildings, abandoned homes and industrial complexes to scavenge for protective gear, weapons, healing items and boosts (energy drink, painkillers) all while eliminating players they come across. The palyable area will begin to shrink and forces battle between leftover players. Also during the game, areas are bombed to also force continued movement of players. The goal is to eliminate all remaining players or teams and be the last standing. The reward is the title of "winner, winner chicken dinner".
 
+As the battle royale format of play has become extremely popular, competition has become fierce. Direct cpompetitors such as Fortnite and Apex Legends have mirrored the style of play while developing their own niches. Major game developers have also realized this popularity and have released battle royale modes for such popular titles as Call of Duty (Infinity Ward) and Battlefield (DICE). Fortnite seems to be the direct competitor to PUBG, with a vast following and availability on PC, console and mobile formats.
 
-## Introduction
+The current landscape of competitiveness in this style of game has been content. As many of these games were released free or at an extrelmely reduced rate, content is where money is generated and interest is kept. New weapons, maps, equipment and character customizations have been what is steadily keeping these products in the consumers' minds. Leaderboard placement and winning is also important to those players with a vested commitment to the game. It is with this that we will take a look to see which, if any particular features in the PUBG game attribute to placing 1st (winning) the match. This may open insights to what aspects of the game may need reinforced or improved upon.
 
-In this lesson, we'll review all the guidelines and specifications for the final project for Module 3.
-
-
-## Objectives
-
-* Understand all required aspects of the Final Project for Module 3
-* Understand all required deliverables
-* Understand what constitutes a successful project
-
-## Final Project Summary
-
-Congratulations! You've made it through another _intense_ module, and now you're ready to show off your newfound Machine Learning skills!
-
-<img src='https://raw.githubusercontent.com/learn-co-curriculum/dsc-3-final-project/master/smart.gif'>
-
-All that remains for Module 3 is to complete the final project!
-
-## The Project
-
-For this project, you're going to select a dataset of your choosing and create a classification model. You'll start by identifying a problem you can solve with classification, and then identify a dataset. You'll then use everything you've learned about Data Science and Machine Learning thus far to source a dataset, preprocess and explore it, and then build and interpret a classification model that answers your chosen question.
+##  Dataset¶
+The dataset was obtained from a Kaggle dataset that was put in place by the publisher for a competition to determine the winner of a match using the features provided. There is a training and test dataset. The training dataset comes with 4.45 million observations separated into 29 columns. The test dataset comprises 1.34 million observations and 28 columns (target column removed).
 
 
-### Selecting a Data Set
+- DBNOs - Number of enemy players knocked. (incapacitated but not killed)
+- assists - Number of enemy players this player damaged that were killed by teammates.
+- boosts - Number of boost items used.
+- damageDealt - Total damage dealt. Note: Self inflicted damage is subtracted.
+- headshotKills - Number of enemy players killed with headshots.
+- heals - Number of healing items used.
+- Id - Player’s Id
+- killPlace - Ranking in match of number of enemy players killed.
+- killPoints - Kills-based external ranking of player. (Think of this as an Elo ranking where only kills matter.) If there is a value other than -1 in rankPoints, then any 0 in killPoints should be treated as a “None”.
+- killStreaks - Max number of enemy players killed in a short amount of time.
+- kills - Number of enemy players killed.
+- longestKill - Longest distance between player and player killed at time of death. This may be misleading, as downing a player and driving away may lead to a large longestKill stat.
+- matchDuration - Duration of match in seconds.
+- matchId - ID to identify match. There are no matches that are in both the training and testing set.
+- matchType - String identifying the game mode that the data comes from. The standard modes are “solo”, “duo”, “squad”, “solo-fpp”, “duo-fpp”, and “squad-fpp”; other modes are from events or custom matches.
+- rankPoints - Elo-like ranking of player. This ranking is inconsistent and is being deprecated in the API’s next version, so use with caution. Value of -1 takes place of “None”.
+- revives - Number of times this player revived teammates.
+- rideDistance - Total distance traveled in vehicles measured in meters.
+- roadKills - Number of kills while in a vehicle.
+- swimDistance - Total distance traveled by swimming measured in meters.
+- teamKills - Number of times this player killed a teammate.
+- vehicleDestroys - Number of vehicles destroyed.
+- walkDistance - Total distance traveled on foot measured in meters.
+- weaponsAcquired - Number of weapons picked up.
+- winPoints - Win-based external ranking of player. (Think of this as an Elo ranking where only winning matters.) If there is a value other than -1 in rankPoints, then any 0 in winPoints should be treated as a “None”.
+- groupId - ID to identify a group within a match. If the same group of players plays in different matches, they will have a different groupId each time.
+numGroups - Number of groups we have data for in the match.
+maxPlace - Worst placement we have data for in the match. This may not match with numGroups, as sometimes the data skips over placements.
+winPlacePerc - The target of prediction. This is a percentile winning placement, where 1 corresponds to 1st place, and 0 corresponds to last place in the match. It is calculated off of maxPlace, not numGroups, so it is possible to have missing chunks in a match.
 
-We encourage you to be very thoughtful when identifying your problem and selecting your data set--an overscoped project goal or a poor data set can quickly bring an otherwise promising project to a grinding halt.
+## Highlights
 
-To help you select an appropriate data set for this project, we've set some guidelines:
+### 0s in Data
+At first glance, there are alot of 0s that is going to be prevalent in the dataset. This is due to the nature of the game where there is a high rate of kills within the first few minutes of the match. Many players will land in the same areas. Immediate kills lead to 0s in their match. With many features having the min, 25%, 50% and 75% quantiles at 0, this is going to be a pretty imbalanced dataset with some significant outliers to the data. This can be handled by SMOTE, which we can implement after we split the data into features and target.
+### Outliers
+There are some significant outliers regarding longest kill and damage dealt. Before I standardize the data, I want to take care of as many outliers as possible without losing too much data. Removing data will stay at or below 1% of total data for each feature with significant outliers.
 
+![ol1](outliers1.png)
 
-1. Your dataset should work for classification. The classification task can be either binary or multi-categorical, as long as it's a classification model.   
+![ol\2](outliers2.png)
 
-2. Your dataset needs to be of sufficient complexity. Try to avoid picking an overly simple dataset. We want to see all the steps of the Data Science Process in this project--it's okay if the dataset is mostly clean, but we expect to see some preprocessing and exploration. See the following section, **_Data Set Constraints_**, for more information on this.   
+### Feature Importance
+The consensus for the models is that around 8 features account for about 90% of the data.
 
-3. On the other end of the spectrum, don't pick a problem that's too complex, either. Stick to problems that you have a clear idea of how you can use machine learning to solve it. For now, we recommend you stay away from overly complex problems in the domains of Natural Language Processing or Computer Vision--although those domains make use of Supervised Learning, they come with a lot of other special requirements and techniques that you don't know yet (but you'll learn soon!). If you're chosen problem feels like you've overscoped, then it probably is. If you aren't sure if your problem scope is appropriate, double check with your instructor!
+![fi](feature_importance.png)
 
-4. **_Serious Bonus Points_** if some or all of the data is data you have to source yourself through web scraping or interacting with a 3rd party API! Having projects that show off your ability to source data effectively make you look that much more impressive when showing your work off to potential employers!
+## Results
 
-### Data Set Constraints
+### Model used - XGBoostClassifier with tuned hyperparameters
 
-When selecting a data set, be sure to take into consideration the following constraints:
+### Training Accuracy: 99.4%
+### Validation accuracy: 99.4%
 
-1. Your data set can't be one we've already worked with in any labs. 
-2. Your data set should contain a minimum of 1000 rows.    
-3. Your data set should contain a minimum of 10 predictor columns, before any one-hot encoding is performed.   
-4. Your instructor must provide final approval on your data set. 
+![cf](confusion_matrix.png)
 
-### Problem First, or Data First?
+## Conclusion
+The goal of this project was to determine what, if any, features can predict a win in the game of Player Unknown's Battlegrounds to uncover some business insights into this ultra-competitive market. Since different features would benefit certain match types over others, the data was separated into solo, duo and squad matchtypes.
 
-There are two ways that you can about getting started: **_Problem-First_** or **_Data-First_**. 
+After initial observation of the PUBG dataset, it was determined that while the dataset was large and clean, it was also imbalanced. Values leaned towards the 0 value. Further scrubbing was performed by removing features that showed collinearity towards other features, was classifying data and had no useable data to incorporate. SMOTE was performed to handle the imbalanced data and the data was scaled.
 
-**_Problem-First_**: Start with a problem that you want to solve with classification, and then try to find the data you need to solve it. If you can't find any data to solve your problem, then you should pick another problem. 
+Logistic Regression, Random Forest and XGBoost models were utilized to predict the target. The initial models performed did show promise, as accuracy in our training and test results for all models were in the high 90% range. It was detremined that additional features could be removed to reduce noise. Features were ranked by model, resampled for balance again and scaled. Also, hyperparameter tuning was performed on the updated data for each model via GridSearch.
 
-**_Data-First_**: Take a look at some of the most popular internet repositories of cool data sets we've listed below. If you find a data set that's particularly interesting for you, then it's totally okay to build your problem around that data set. 
+As a result, the Logistic Regression model did lose a little accuracy, but the prediction power was greatly improved. The Random Forest model showed similar results, with accuracy being slightly reduced, but True Positive prediction increased. The model that showed the greatest improvement via tuning and feature reduction was the XGBoost model. Accuracy improved in both training and test sets as well as the predictive power of the model.
 
-There are plenty of amazing places that you can get your data from. We recommend you start looking at data sets in some of these resources first:
-
-* [UCI Machine Learning Datasets Repository](https://archive.ics.uci.edu/ml/datasets.html)
-* [Kaggle Datasets](https://www.kaggle.com/datasets)
-* [Awesome Datasets Repo on Github](https://github.com/awesomedata/awesome-public-datasets)
-* [New York City Open Data Portal](https://opendata.cityofnewyork.us/)
-* [Inside AirBNB ](http://insideairbnb.com/)
-
-
-## The Deliverables
-
-There will be four deliverables for this project:
-
-1. A well documented **Jupyter Notebook** containing any code you've written for this project and comments explaining it. This work will need to be pushed to your GitHub repository in order to submit your project.   
-
-2. A short **Keynote/PowerPoint/Google Slides presentation** (delivered as a PDF export) that gives a brief overview of your problem/dataset, and each step of the OSEMN process. Make sure to also add and commit this pdf of your non-technical presentation to your repository with a file name of presentation.pdf.
-
-3. A **blog post** (800-1500 words) about one element of the project - it could be the EDA, the feature selection, the choice of visualizations or anything else technical relating to the project. It should be targeted at your peers - aspiring data scientists.  
-
-4. A **Video Walkthrough** of your non-technical presentation. Some common video recording tools used are Zoom, Quicktime, and Nimbus. After you record your presentation, publish it on a service like YouTube or Google Drive, you will need a link to the video to submit your project.
-
-
-### Jupyter Notebook Must-Haves
-
-For this project, your jupyter notebook should meet the following specifications:
-
-**_Organization/Code Cleanliness_**
-
-* The notebook should be well organized, easy to follow, and code is commented where appropriate.  
-    * Level Up: The notebook contains well-formatted, professional looking markdown cells explaining any substantial code. All functions have docstrings that act as professional-quality documentation.  
-* The notebook is written to technical audiences with a way to both understand your approach and reproduce your results. The target audience for this deliverable is other data scientists looking to validate your findings.
-
-**_Process, Methodology, and Findings_**
-
-* Your notebook should contain a clear record of your process and methodology for exploring and preprocessing your data, building and tuning a model, and interpreting your results.
-* We recommend you use the OSEMN process to help organize your thoughts and stay on track.
-
-
-### Blog Post Must-Haves
-
-Your blog post should clearly explain your process and results, including:
-* An explanation of the problem you're trying to solve and the dataset you choose for it
-* Well documented examples of code and visualizations (when appropriate)
-
-
-**_NOTE:_**  This blog post is your way of showcasing the work you've done on this project--chances are it will soon be read by a recruiter or hiring manager! Take the time to make sure that you craft your story well, and clearly explain your process and findings in a way that clearly shows both your technical expertise **_and_** your ability to communicate your results!
-
-## Submitting your Project
-
-You’re almost done! In order to submit your project for review, include the following links to your work in the corresponding fields on the right-hand side of Learn.
-
-1. **GitHub Repo:** Now that you’ve completed your project in Jupyter Notebooks, push your work to GitHub and paste that link to the right. (If you need help doing so, review the resources [here](https://docs.google.com/spreadsheets/d/1CNGDhjcQZDRx2sWByd2v-mgUOjy13Cd_hQYVXPuzEDE/edit#gid=0).)
-_Reminder: Make sure to also add and commit a pdf of your non-technical presentation to the repository with a file name of presentation.pdf._
-2. **Blog Post:** Include a link to your blog post.
-3. **Record Walkthrough:** Include a link to your video walkthrough.
-
-Hit "I'm done" to wrap it up. You will receive an email in order to schedule your review with your instructor.
-#   W i n n i n g - a t - P U B G - B i n o m i a l - C l a s s i f i c a t i o n -  
- 
+It is recommended that this data be revisted and models tested for the duo matches and squad matches as well. Also, the Random Forest model outperformed the XGBoost model in the initial run. This may validate further investigation into feature selection and tuning for that particular model.
